@@ -1,0 +1,166 @@
+{
+  "facts": {
+    "providers": [
+      {
+        "id": "rail",
+        "concurrent": 2,
+        "credits": 11,
+        "desk_reserved": 5,
+        "window_ms": 1000
+      },
+      {
+        "id": "loop",
+        "concurrent": 2,
+        "credits": 10,
+        "desk_reserved": 4,
+        "window_ms": 1000
+      }
+    ],
+    "legs": [
+      {
+        "id": "r17",
+        "operator": "rail",
+        "query": "west-museum",
+        "charge_key": "rail/wm",
+        "charge": 3,
+        "scope": "ordinary",
+        "needs_proof": false
+      },
+      {
+        "id": "l25",
+        "operator": "loop",
+        "query": "dock-east",
+        "charge_key": "loop/de",
+        "charge": 4,
+        "scope": "assisted",
+        "needs_proof": true
+      },
+      {
+        "id": "l28",
+        "operator": "loop",
+        "query": "hill-south",
+        "charge_key": "loop/hs",
+        "charge": 2,
+        "scope": "ordinary",
+        "needs_proof": false
+      }
+    ],
+    "itineraries": [
+      {
+        "id": "bridge",
+        "legs": [
+          "r17",
+          "l25"
+        ]
+      },
+      {
+        "id": "steps",
+        "legs": [
+          "r17",
+          "l28"
+        ]
+      }
+    ]
+  },
+  "events": [
+    {
+      "at": 0,
+      "kind": "query",
+      "request": "p-3",
+      "client": "public",
+      "itineraries": [
+        "bridge",
+        "steps"
+      ],
+      "arrival": 674,
+      "wait_ms": 115
+    },
+    {
+      "at": 22,
+      "kind": "query",
+      "request": "d-1",
+      "client": "desk",
+      "itineraries": [
+        "bridge"
+      ],
+      "arrival": 674,
+      "wait_ms": 360
+    },
+    {
+      "at": 86,
+      "kind": "disconnect",
+      "request": "p-3"
+    },
+    {
+      "at": 110,
+      "kind": "query",
+      "request": "p-5",
+      "client": "public",
+      "itineraries": [
+        "bridge",
+        "steps"
+      ],
+      "arrival": 700,
+      "wait_ms": 150
+    }
+  ],
+  "exchanges": [
+    {
+      "method": "GET",
+      "path": "/providers/rail/live/west-museum",
+      "match": {},
+      "status": 200,
+      "response": {
+        "covers": [
+          660,
+          690
+        ],
+        "ttl_ms": 300,
+        "proof": null
+      },
+      "delay_ms": 65
+    },
+    {
+      "method": "GET",
+      "path": "/providers/loop/live/dock-east",
+      "match": {},
+      "status": 200,
+      "response": {
+        "covers": [
+          667,
+          686
+        ],
+        "ttl_ms": 190,
+        "proof": {
+          "scope": "assisted",
+          "area": "dock-east"
+        }
+      },
+      "delay_ms": 220
+    },
+    {
+      "method": "GET",
+      "path": "/providers/loop/live/hill-south",
+      "match": {},
+      "status": 503,
+      "response": {},
+      "drop": true,
+      "delay_ms": 95
+    },
+    {
+      "method": "GET",
+      "path": "/providers/rail/live/west-museum",
+      "match": {},
+      "status": 200,
+      "response": {
+        "covers": [
+          690,
+          730
+        ],
+        "ttl_ms": 130,
+        "proof": null
+      },
+      "delay_ms": 60
+    }
+  ]
+}

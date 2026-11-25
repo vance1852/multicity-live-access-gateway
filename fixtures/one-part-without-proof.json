@@ -1,0 +1,105 @@
+{
+  "facts": {
+    "providers": [
+      {
+        "id": "bus",
+        "concurrent": 1,
+        "credits": 5,
+        "desk_reserved": 2,
+        "window_ms": 400
+      },
+      {
+        "id": "town",
+        "concurrent": 1,
+        "credits": 4,
+        "desk_reserved": 2,
+        "window_ms": 400
+      }
+    ],
+    "legs": [
+      {
+        "id": "b1",
+        "operator": "bus",
+        "query": "spur",
+        "charge_key": "b1",
+        "charge": 2,
+        "scope": "ordinary",
+        "needs_proof": false
+      },
+      {
+        "id": "t2",
+        "operator": "town",
+        "query": "stop",
+        "charge_key": "t2",
+        "charge": 2,
+        "scope": "assisted",
+        "needs_proof": true
+      }
+    ],
+    "itineraries": [
+      {
+        "id": "river-park",
+        "legs": [
+          "b1",
+          "t2"
+        ]
+      }
+    ]
+  },
+  "events": [
+    {
+      "at": 0,
+      "kind": "query",
+      "request": "d-8",
+      "client": "desk",
+      "itineraries": [
+        "river-park"
+      ],
+      "arrival": 820,
+      "wait_ms": 160
+    },
+    {
+      "at": 12,
+      "kind": "query",
+      "request": "p-4",
+      "client": "public",
+      "itineraries": [
+        "river-park"
+      ],
+      "arrival": 821,
+      "wait_ms": 145
+    }
+  ],
+  "exchanges": [
+    {
+      "method": "GET",
+      "path": "/providers/bus/live/spur",
+      "match": {},
+      "status": 200,
+      "response": {
+        "covers": [
+          800,
+          890
+        ],
+        "ttl_ms": 250,
+        "proof": null
+      },
+      "delay_ms": 40
+    },
+    {
+      "method": "GET",
+      "path": "/providers/town/live/stop",
+      "match": {},
+      "status": 200,
+      "response": {
+        "covers": [
+          810,
+          838
+        ],
+        "ttl_ms": 70,
+        "proof": null
+      },
+      "delay_ms": 78
+    }
+  ]
+}
